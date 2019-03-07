@@ -56,36 +56,28 @@ public class Result implements Runnable {
         while (i <= y) {
             BigInteger I = BigInteger.valueOf(i);
             BigInteger J = BigInteger.valueOf(j);
-            int a = 0;
             try {
-                a = getAllBets.getPlayerRoundBets(I, J);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            int b = 0;
-            double c = 0;
-            try {
-                b = getAllBets.allStaticProfits(I, J)[0].intValue();
-                c = getAllBets.allStaticProfits(I, J)[1].floatValue() / 1000000000 / 1000000000;
+                int a = getAllBets.getPlayerRoundBets(I, J);
+
+                BigInteger[] result = getAllBets.allStaticProfits(I, J);
+                int b = result[0].intValue();
+                double c = result[1].floatValue() / 1000000000 / 1000000000;
                 System.out.println("b=" + b + "c=" + c);
+                if (a > b && a != 0) {
+                    long value3;
+                    if (c < 0.9) {
+                        value3 = (long) Math.floor(a - b);
+                    } else {
+                        value3 = (long) Math.floor(a - b - 1);
+                    }
+                    Counter.add(value3);
+                    System.out.println("Counter.counter=" + Counter.counter);
 
-
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             System.out.println("ThreadName=" + Thread.currentThread() + "i=" + i);
-
-            if (a > b && a != 0) {
-                long value3;
-                if (c < 0.9) {
-                    value3 = (long) Math.floor(a - b);
-                } else {
-                    value3 = (long) Math.floor(a - b - 1);
-                }
-                Counter.add(value3);
-                System.out.println("Counter.counter=" + Counter.counter);
-
-            }
             i = i + 1;
 
         }
