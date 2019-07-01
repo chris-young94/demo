@@ -11,6 +11,7 @@ import java.security.NoSuchProviderException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 public class RequestTask implements Runnable {
@@ -24,13 +25,13 @@ public class RequestTask implements Runnable {
     @Override
     public void run() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        int i = 1;
+        AtomicLong piid = new AtomicLong(1);
 
         while (true) {
             String address = null;
             String filename = null;
-            int num = 1;
-            System.out.println("第" + i + "个账号准备生成");
+            AtomicLong counter = new AtomicLong(1);
+            System.out.println("第" + piid + "个账号准备生成");
             //生成钱包
             GetAdress adr = null;
             try {
@@ -58,14 +59,18 @@ public class RequestTask implements Runnable {
                     status = httpClientUtils.getCode();
 
                     boolean sta = result.contains(str);
-                    while (status == 502 || sta) {
-                        if (status == 502) {
+                    while (status == 502 || sta || status == 429) {
+                        if (status == 502 ) {
                             System.out.println("失败状态码为" + status + ",准备重新取币,等待时间15S");
                             Thread.sleep(10 * 1000); //每次间隔15秒
                         }
                         if (sta){
-                            System.out.println("失败状态信息为" + status + str+",准备重新访问,等待时间1分钟      "+sdf.format(new Date()));
-                            Thread.sleep(1*60 * 1000); //每次间隔60秒
+                            System.out.println("失败状态信息为" + status + str+",准备重新访问,等待时间45分钟      "+sdf.format(new Date()));
+                            Thread.sleep(1*45 * 1000); //每次间隔60秒
+                        }
+                        if (status == 429){
+                            System.out.println("失败状态信息为" + status+result +",准备重新访问,等待时间5分钟      "+sdf.format(new Date()));
+                            Thread.sleep(5*60 * 1000); //每次间隔60秒
                         }
                         HttpClientUtils httpClientUtils2 = HttpClientUtils.sendPost(url, address);
                         result = httpClientUtils2.getMessage();
@@ -76,11 +81,11 @@ public class RequestTask implements Runnable {
                     if (status != 200) {
                         System.out.println(sdf.format(new Date()) + "            任务失败，失败状态码=" + status);
                         System.out.println("失败信息为:" + result);
-                        num--;
-                        if (num <= 1){
+                        counter.getAndAdd(-1);
+                        if (counter.intValue() <= 1){
                             System.out.println("无币转账，准备生成新钱包，等待45秒");
-                            Thread.sleep(30 * 1000); //转账后等待45秒重新生成新钱包
-                            i++;
+                            Thread.sleep(60 * 1000); //转账后等待45秒重新生成新钱包
+                            piid.getAndAdd(1);
                             break;
                         }
                         else {
@@ -90,9 +95,10 @@ public class RequestTask implements Runnable {
                             Credentials credentials = WalletUtils.loadCredentials(
                                     "12345678",
                                     "/Users/chris/Desktop/Auto/" + filename);
-                            String txhash = new Transaction().transaction(num, address, credentials);
+                            int s = counter.intValue();
+                            String txhash = new Transaction().transaction(s, address, credentials);
                             if (txhash.equals(null)){
-                                String txhash2 = new Transaction().transaction(num,address,credentials);
+                                String txhash2 = new Transaction().transaction(counter.intValue(),address,credentials);
                                 if (txhash2.equals(null)){
                                     System.out.println("转账失败");
                                 } else {
@@ -102,19 +108,19 @@ public class RequestTask implements Runnable {
                                 System.out.println("转账成功，交易地址为"+txhash);
                             }
                             System.out.println("准备生成新钱包，等待50秒");
-                            Thread.sleep(30 * 1000); //转账后等待30秒重新生成新钱包
-                            i++;
+                            Thread.sleep(10 * 1000); //转账后等待10秒重新生成新钱包
+                            piid.addAndGet(1);
                         }
                         break;
 
                     } else {
                         try {
-                            System.out.println("-------------------------------第" + i + "个账号，第" + num + "次完成取币---------------------");
-                            Thread.sleep(6 * 1000); //每次间隔6秒
+                            System.out.println("-------------------------------第" + piid + "个账号，第" + counter + "次完成取币---------------------");
+                            Thread.sleep(15 * 1000); //每次间隔6秒
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        num++;
+                        counter.getAndAdd(1);
                     }
 
 

@@ -25,17 +25,34 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.51</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.10</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -56,11 +73,7 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.5</version>
 		</dependency>
-		<dependency>
-			<groupId>com.netflix.feign</groupId>
-			<artifactId>feign-httpclient</artifactId>
-			<version>8.17.0</version>
-		</dependency>
+
 	</dependencies>
 
 	<properties>

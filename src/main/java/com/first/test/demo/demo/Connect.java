@@ -8,7 +8,7 @@ public class Connect {
     public static final String url="jdbc:mysql://localhost:3306/demo?useSSL=false&useUnicode=true&characterEncoding=utf-8";
     public static final String name="com.mysql.jdbc.Driver";
     public static final String user="root";
-    public static final String password="2018yanghang";
+    public static final String password="123";
 
 
     public Connection getConnection(){
