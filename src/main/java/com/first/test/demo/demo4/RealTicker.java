@@ -51,9 +51,9 @@ public class RealTicker {
      * 更新时间
      */
     @Column(nullable = false)
-    private Long updateTime;
+    private String updateTime;
 
-    public RealTicker(float open,float close,float low,float high,String symbol,Long updateTime){
+    public RealTicker(float open,float close,float low,float high,String symbol,String updateTime){
         this.open = open;
         this.close = close;
         this.low = low;

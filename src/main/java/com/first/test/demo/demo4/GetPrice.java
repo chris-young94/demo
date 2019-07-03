@@ -17,12 +17,11 @@ import java.util.stream.Collectors;
 public class GetPrice {
     private final static String HUOBI_GETPRICE_URL = "https://api.huobi.pro/market/tickers";
     private final static String STATES = "ok";
-    private final static String USDT = "usdt";
 
     @Resource
     private RealTickerRepo realTickerRepo;
 
-    @Scheduled(fixedRate = 1000 * 1)
+    @Scheduled(fixedRate = 500)
     public void getHuobiPrice(){
         String url = String.format(HUOBI_GETPRICE_URL,null);
         Map<String,Object> params = null;
@@ -35,19 +34,27 @@ public class GetPrice {
         String  status = jsonObject.getString("status");
         if(STATES.equals(status)) {
             String b = jsonObject.getString("data");
-            List<Ticker> list = JSONObject.parseArray(b,  Ticker.class);
+            List<RealTicker> list = JSONObject.parseArray(b,  RealTicker.class);
             List<RealTicker> mList = list
-                    .stream()
-                    .filter(s -> s.getSymbol().contains(USDT))
+                    .parallelStream()
+                    .filter(s -> {
+                        for (SymbolEnum ignored : SymbolEnum.values()) {
+                            if (ignored.getDesc().indexOf(s.getSymbol()) > -1) {
+                                return true;
+                            }
+                        } return false;
+                    })
                     .map(ticker -> {
                         String symbol = ticker.getSymbol();
                         float open = ticker.getOpen();
                         float low = ticker.getLow();
                         float close = ticker.getClose();
                         float high = ticker.getHigh();
-                        Long time = System.currentTimeMillis();
+                        String time = DateUtil.getPresentTime();
 
                         RealTicker realTicker =  realTickerRepo.findBySymbol(symbol);
+                        
+
                         if (null == realTicker){
                             RealTicker realTicker1 =  new RealTicker(open,close,low,high,symbol,time);
                            return realTicker1;
@@ -62,8 +69,6 @@ public class GetPrice {
                         }
                     }).collect(Collectors.toList());
             realTickerRepo.saveAll(mList);
-            System.out.println(mList.size());
-            System.out.println(mList);
         }
     }
 
