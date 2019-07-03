@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @author chris
  **/
 @Repository
-public interface RealTickerRepo extends JpaRepository<RealTicker,Long> , Serializable {
+public interface CurrencyPriceRepo extends JpaRepository<CurrencyPrice,Long> , Serializable {
 
-    RealTicker findBySymbol(String symbol);
+    CurrencyPrice findBySymbol(String symbol);
 
 }
