@@ -18,13 +18,13 @@ public class Ticker {
      * 交易笔数
      */
     @Column(nullable = false)
-    private  Integer count;
+    private Integer count;
 
     /**
      * 开盘价
      */
     @Column(nullable = false)
-    private  float open;
+    private float open;
 
     /**
      * 最新价

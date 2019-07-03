@@ -41,7 +41,7 @@ public class OkHttpClientHelper {
         // 解析头部
         Request.Builder builder = new Request.Builder();
         if (null != header) {
-            for(Map.Entry<String, String> entry : header.entrySet()){
+            for (Map.Entry<String, String> entry : header.entrySet()) {
                 // 组装成 OkHttp 的 Header
                 builder.header(entry.getKey(), entry.getValue());
             }
@@ -49,7 +49,7 @@ public class OkHttpClientHelper {
         if (!url.contains(STR_MARK_QUESTION) && null != params) {
             StringBuilder stringBuilder = new StringBuilder(url);
             stringBuilder.append(STR_MARK_QUESTION);
-            for(Map.Entry<String,Object> entry : params.entrySet()){
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
                 stringBuilder.append(entry.getKey()).append(STR_MARK_EQUAL).append(entry.getValue()).append(STR_MARK_AND);
             }
             url = stringBuilder.toString();
@@ -65,7 +65,7 @@ public class OkHttpClientHelper {
         // 解析头部
         Request.Builder builder = new Request.Builder();
         if (null != header) {
-            for(Map.Entry<String, String> entry : header.entrySet()){
+            for (Map.Entry<String, String> entry : header.entrySet()) {
                 builder.header(entry.getKey(), entry.getValue());
             }
         }
@@ -93,7 +93,7 @@ public class OkHttpClientHelper {
                 .parse("application/json; charset=utf-8");
         String bodyStr = JSON.toJSONString(params);
         RequestBody body = RequestBody.create(mediaType, bodyStr);
-        for(Map.Entry<String, String> entry : header.entrySet()){
+        for (Map.Entry<String, String> entry : header.entrySet()) {
             builder.header(entry.getKey(), entry.getValue());
         }
         builder.url(url).post(body);
@@ -101,7 +101,7 @@ public class OkHttpClientHelper {
         return execute(okRequest);
     }
 
-    public static String post(String url,String jsonBody) throws Exception{
+    public static String post(String url, String jsonBody) throws Exception {
         log.info("Request url = {}", url);
         log.info("Request params = {}", jsonBody);
         Request.Builder builder = new Request.Builder();
@@ -125,7 +125,7 @@ public class OkHttpClientHelper {
                 .parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(mediaType, jsonStr);
         if (null != header) {
-            for(Map.Entry<String, String> entry : header.entrySet()){
+            for (Map.Entry<String, String> entry : header.entrySet()) {
                 builder.header(entry.getKey(), entry.getValue());
             }
         }

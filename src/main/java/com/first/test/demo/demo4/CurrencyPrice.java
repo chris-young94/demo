@@ -36,7 +36,7 @@ public class CurrencyPrice {
     @Column(nullable = false)
     private Long createTime;
 
-    public CurrencyPrice(BigDecimal price, String symbol, Long createTime){
+    public CurrencyPrice(BigDecimal price, String symbol, Long createTime) {
         this.price = price;
         this.symbol = symbol;
         this.createTime = createTime;

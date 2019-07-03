@@ -23,18 +23,18 @@ public class GetPrice {
     private CurrencyPriceRepo currencyPriceRepo;
 
     @Scheduled(fixedRate = 500)
-    public void getHuobiPrice(){
+    public void getHuobiPrice() {
         long start = System.currentTimeMillis();
-        String url = String.format(HUOBI_GETPRICE_URL,null);
-        Map<String,Object> params = null;
-        String result = OkHttpClientHelper.get(url,null,params);
+        String url = String.format(HUOBI_GETPRICE_URL, null);
+        Map<String, Object> params = null;
+        String result = OkHttpClientHelper.get(url, null, params);
         JSONObject jsonObject = JSON.parseObject(result);
-        if (jsonObject == null){
+        if (jsonObject == null) {
             return;
         }
 
-        String  status = jsonObject.getString("status");
-        if(status.equals(STATES)) {
+        String status = jsonObject.getString("status");
+        if (status.equals(STATES)) {
             String data = jsonObject.getString("data");
             List<Ticker> list = JSONObject.parseArray(data, Ticker.class);
 //            List<CurrencyPrice> realTickerList = new LinkedList<>();
@@ -52,7 +52,8 @@ public class GetPrice {
                             if (ignored.getDesc().indexOf(s.getSymbol()) > -1) {
                                 return true;
                             }
-                        } return false;
+                        }
+                        return false;
                     })
 //                    .filter(s -> {
 //                        for(int i=0, n=symbols.length;i<n;i++){
@@ -65,24 +66,20 @@ public class GetPrice {
                         String symbol = ticker.getSymbol();
                         BigDecimal close = BigDecimal.valueOf(ticker.getClose());
                         Long time = System.currentTimeMillis();
-
-                        CurrencyPrice currencyPrice =  currencyPriceRepo.findBySymbol(symbol);
-                        
-
-                        if (null == currencyPrice){
-                            CurrencyPrice currencyPrice1 =  new CurrencyPrice(close,symbol,time);
-                           return currencyPrice1;
-                        }
-                        else {
-                           currencyPrice.setPrice(close);
-                           currencyPrice.setCreateTime(time);
-                           return currencyPrice;
+                        CurrencyPrice currencyPrice = currencyPriceRepo.findBySymbol(symbol);
+                        if (null == currencyPrice) {
+                            CurrencyPrice currencyPrice1 = new CurrencyPrice(close, symbol, time);
+                            return currencyPrice1;
+                        } else {
+                            currencyPrice.setPrice(close);
+                            currencyPrice.setCreateTime(time);
+                            return currencyPrice;
                         }
                     }).collect(Collectors.toList());
             currencyPriceRepo.saveAll(mList);
         }
         long end = System.currentTimeMillis();
-        System.out.println(end-start);
+        System.out.println(end - start);
     }
 
 
