@@ -35,4 +35,9 @@ public class DateUtil {
     protected static String getPresentTime() {
         return YYMMDDHHMMSSSSS.get().format(new Date());
     }
+
+    public static String getPresentDate() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    }
+
 }

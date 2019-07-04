@@ -20,7 +20,7 @@ public class CurrencyPrice {
     /**
      * 最新价
      */
-    @Column(nullable = false)
+    @Column(precision = 20, scale = 8)
     private BigDecimal price;
 
 
