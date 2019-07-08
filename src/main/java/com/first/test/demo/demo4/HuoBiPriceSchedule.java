@@ -68,6 +68,7 @@ public class HuoBiPriceSchedule {
                             return null;
                         }
                     }).collect(Collectors.toList());
+            System.out.println(DateUtil.getPresentDate()+"\r\n------------------------------------------------\n\r");
             saveAll(mList);
         }
     }
