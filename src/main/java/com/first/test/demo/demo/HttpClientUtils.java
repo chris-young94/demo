@@ -53,7 +53,7 @@ public class HttpClientUtils {
         String message = "";
 
         // 设置通用的请求属性
-        request.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36");
+        request.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
         request.setHeader("accept", "*/*");
         request.setHeader("accept-encoding", "gzip, deflate, br");
         request.setHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8");
