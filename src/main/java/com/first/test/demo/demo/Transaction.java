@@ -24,7 +24,7 @@ public class Transaction {
         //设置需要的矿工费
         BigInteger GAS_PRICE = BigInteger.valueOf(1_000_000_000_000L);
         BigInteger GAS_LIMIT = BigInteger.valueOf(210_000);
-        int b = a-1;
+        double b = a-0.1;
 
         //调用的是kovan测试环境，这里使用的是infura这个客户端
         Web3j web3j = Web3j.build(new HttpService("https://ropsten.infura.io/v3/42e18b6d9071413790b1d3b568b6d3dd"));

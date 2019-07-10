@@ -23,7 +23,7 @@ public class TransTest {
 
 
     private TransTest(String serverUrl) {
-        this.serverUrl = serverUrl;
+        TransTest.serverUrl = serverUrl;
         web3j = Web3j.build(new HttpService(serverUrl));
     }
 

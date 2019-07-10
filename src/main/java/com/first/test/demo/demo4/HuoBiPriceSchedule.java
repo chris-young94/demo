@@ -29,7 +29,7 @@ public class HuoBiPriceSchedule {
     @Resource
     private CurrencyPriceRepo currencyPriceRepo;
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 1000 * 60 * 5)
     public void getHuobiPrice() {
         String url = String.format(HUOBI_GETPRICE_URL, null);
         Map<String, Object> params = null;
