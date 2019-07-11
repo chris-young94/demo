@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 @Service
-public class CurrenPriceSevice {
+public class CurrenyPriceSevice {
 
     @Resource
     private CurrencyPriceRepo currencyPriceRepo;

@@ -1,4 +1,4 @@
-package com.first.test.demo.demo4;
+package com.first.test.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.first.test.demo.demo4")
 @EnableScheduling
 @EnableTransactionManagement
 @EnableCaching

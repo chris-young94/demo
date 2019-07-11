@@ -3,6 +3,7 @@ package com.first.test.demo.demo4;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class HuoBiPriceSchedule {
     private CurrencyPriceRepo currencyPriceRepo;
 
     @Scheduled(fixedRate = 1000 * 60 * 5)
+    @CacheRemove(value = "Ticker")
     public void getHuobiPrice() {
         String url = String.format(HUOBI_GETPRICE_URL, null);
         Map<String, Object> params = null;
@@ -109,7 +111,7 @@ public class HuoBiPriceSchedule {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveAll(List list) {
+    public void saveAll(List<CurrencyPrice> list) {
         try {
             currencyPriceRepo.saveAll(list);
         } catch (Exception e) {
