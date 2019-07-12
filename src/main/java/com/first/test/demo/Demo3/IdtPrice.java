@@ -1,8 +1,8 @@
 package com.first.test.demo.Demo3;
 
 
-import com.first.test.demo.demo4.DateUtil;
-import com.first.test.demo.demo4.HuoBiPriceSchedule;
+import com.first.test.demo.demo4.util.DateUtil;
+import com.first.test.demo.demo4.listen.HuoBiPriceSchedule;
 
 
 public class IdtPrice {

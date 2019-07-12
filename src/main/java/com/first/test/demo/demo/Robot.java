@@ -13,7 +13,7 @@ import java.util.Date;
 import static javax.persistence.GenerationType.IDENTITY;
 
 //@Data
-@Table(name = "Robot")
+//@Table(name = "Robot")
 public class Robot {
     @Id
     @GeneratedValue(strategy = IDENTITY)

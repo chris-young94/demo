@@ -39,6 +39,7 @@ public class RedisConfig  {
     @Autowired
     LettuceConnectionFactory lettuceConnectionFactory;
 
+    // 可以直接使用RedisTemplate进行缓存
     @Bean
     public RedisTemplate<Object, Object> redisTemplate1() {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
@@ -105,7 +106,7 @@ public class RedisConfig  {
     @Bean
     public CacheManager cacheManager(){
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .disableCachingNullValues().entryTtl(Duration.ofSeconds(60));
+                .disableCachingNullValues().entryTtl(Duration.ofSeconds(40));
 
 //          方式一 无法自定义每个key的过期时间
 //        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager

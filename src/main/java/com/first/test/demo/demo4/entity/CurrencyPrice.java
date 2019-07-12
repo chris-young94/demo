@@ -1,8 +1,9 @@
-package com.first.test.demo.demo4;
+package com.first.test.demo.demo4.entity;
 
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -11,7 +12,9 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @Table(name = "currency_price")
-public class CurrencyPrice {
+public class CurrencyPrice implements Serializable {
+
+    private static final long serialVersionUID = -8196494612393876134L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

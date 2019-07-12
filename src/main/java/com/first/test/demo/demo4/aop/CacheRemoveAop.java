@@ -1,4 +1,4 @@
-package com.first.test.demo.demo4;
+package com.first.test.demo.demo4.aop;
 
 
 import org.aspectj.lang.JoinPoint;
@@ -30,7 +30,7 @@ public class CacheRemoveAop {
     /**
      * 截获标有@CacheRemove的方法
      */
-    @Pointcut(value = "(execution(* *.*(..)) && @annotation(com.first.test.demo.demo4.CacheRemove))")
+    @Pointcut(value = "(execution(* *.*(..)) && @annotation(com.first.test.demo.demo4.aop.CacheRemove))")
     private void pointcut() {
     }
 
