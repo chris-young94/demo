@@ -55,7 +55,7 @@ public class RestResp<T> {
         return new RestResp<T>(-1, "fail");
     }
 
-    public static <T> RestResp fail(ResponseStatusEnum response) {
+    public static <T> RestResp fail(GlobalConstant.RestResponseEnum response) {
         return new RestResp<T>(response.getCode(), response.getDesc());
     }
 
