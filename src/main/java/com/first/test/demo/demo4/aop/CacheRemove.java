@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CacheRemove {
 
+    /**
+     * @des 根据命名规则与cacheable生成key的规则，例如@cacheable(cachename = "Ticker",key = "idtusdt") 则生成key名为Ticker::idtusdt
+     * 则想要删除该key 必须制定 value 为Ticker key为idtusdt
+     */
     // 需要删除的大类，
     String value() default "";
 

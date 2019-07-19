@@ -2,9 +2,7 @@ package com.first.test.demo.demo4.aop;
 
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -16,28 +14,31 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+import javax.persistence.SecondaryTable;
 import java.lang.reflect.Method;
+import java.util.Set;
 
 @Component
 @Aspect
 public class CacheRemoveAop {
-    @Autowired
+    @Resource
     RedisTemplate<String, String> redis;
 
-    ExpressionParser parser = new SpelExpressionParser();
-    LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+  //  private ExpressionParser parser = new SpelExpressionParser();
+    private LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
     /**
      * 截获标有@CacheRemove的方法
      */
-    @Pointcut(value = "(execution(* *.*(..)) && @annotation(com.first.test.demo.demo4.aop.CacheRemove))")
+    @Pointcut(value = "(@annotation(com.first.test.demo.demo4.aop.CacheRemove))")
     private void pointcut() {
     }
 
     /**
      * 功能描述: 切面在截获方法返回值之后
      */
-    @AfterReturning(value = "pointcut()")
+    @After(value = "pointcut()")
     private void process(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         //获取切入方法的数据
@@ -61,12 +62,23 @@ public class CacheRemoveAop {
 
             //需要移除的正则key
             String[] keys = cacheRemove.key();
-            sb.append(":");
-            for (String key : keys) {
-                Expression expression = parser.parseExpression(key);
-                String value1 = expression.getValue(context, String.class);
-                //指定清除的key的缓存
-                cleanRedisCache(sb.toString() + value1);
+            System.out.println(keys+"123456                 "+keys.length);
+            if (1 >= keys.length){
+                Set<String> allKeys = redis.keys("*");
+                Long a = redis.delete(allKeys);
+                System.out.println("a = " +a);
+                if (a == 1){
+                    System.out.println("del success");
+                }
+            } else {
+                sb.append("::");
+                System.out.println(sb);
+                for (String key : keys) {
+//                    Expression expression = parser.parseExpression(key);
+//                    String value1 = expression.getValue(context, String.class);
+//                    //指定清除的key的缓存
+                    cleanRedisCache(sb.toString() + key);
+                }
             }
         }
     }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
-
 /**
  * @author chris
  */
@@ -14,14 +13,15 @@ public class FileStatus {
     private static String fileDownloadPath;
     private static String filePath;
 
-    public static String getFileDownloadPath(){
+    public static String getFileDownloadPath() {
         return fileDownloadPath;
     }
 
-    @Value("http://localhost:9020/app/download/")
-    public void setFilePath(String fileDownloadPath){
-        FileStatus.fileDownloadPath=fileDownloadPath;
+    @Value("${app.download.path}")
+    public void setFilePath(String fileDownloadPath) {
+        FileStatus.fileDownloadPath = fileDownloadPath;
     }
+
 
     public static String getFilePath() {
         return filePath;

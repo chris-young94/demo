@@ -79,13 +79,16 @@ public class RedisConfig  {
     }
 
 
+
+    //用cacheManage可以不用直接以来redisTemplate方法
+
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory(){
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
         poolConfig.setMaxIdle(500);
         poolConfig.setMinIdle(0);
         poolConfig.setMaxTotal(500);
-        poolConfig.setMaxWaitMillis(1000);
+        poolConfig.setMaxWaitMillis(1000 * 5);
         poolConfig.setTestOnBorrow(true);
 
         //这里单独配置超时时间，连接池管理
@@ -93,7 +96,6 @@ public class RedisConfig  {
 
         LettuceClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
                 .commandTimeout(Duration.ofMillis(200))
-                .shutdownTimeout(Duration.ofMillis(200))
                 .poolConfig(poolConfig)
                 .build();
 
@@ -106,7 +108,7 @@ public class RedisConfig  {
     @Bean
     public CacheManager cacheManager(){
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .disableCachingNullValues().entryTtl(Duration.ofSeconds(40));
+                .disableCachingNullValues().entryTtl(Duration.ofSeconds(60));
 
 //          方式一 无法自定义每个key的过期时间
 //        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager
@@ -122,7 +124,7 @@ public class RedisConfig  {
 
     private Map<String, RedisCacheConfiguration> getRedisCacheConfigurationMap() {
         Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
-        redisCacheConfigurationMap.put("Ticker",redisCacheConfiguration(30));
+        redisCacheConfigurationMap.put("Ticker",redisCacheConfiguration(20));
         return redisCacheConfigurationMap;
     }
 

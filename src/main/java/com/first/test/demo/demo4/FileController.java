@@ -31,11 +31,11 @@ public class FileController {
     }
 
     @PostMapping("/uploadApp/{version}")
-    public RestResp uploadApp(@ModelAttribute FileVO fileVO){
+    public RestResp uploadApp(@ModelAttribute FileVO fileVO,@PathVariable @NotNull String version){
         if (fileVO.getMultipartFile().isEmpty()) {
             return RestResp.fail("file do not exist");
         }
-        return fileService.AppUpload(fileVO,fileVO.getVersion());
+        return fileService.AppUpload(fileVO,version);
     }
 
     @GetMapping("/down/{name}")

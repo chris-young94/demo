@@ -9,6 +9,7 @@ import com.first.test.demo.demo4.entity.HuobiData;
 import com.first.test.demo.demo4.util.DateUtil;
 import com.first.test.demo.demo4.util.OkHttpClientHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +36,10 @@ public class HuoBiPriceSchedule {
     @Resource
     private CurrencyPriceRepo currencyPriceRepo;
 
-    @Scheduled(fixedRate = 1000 * 20)
-//    @CacheRemove(value = "Ticker")
+    @Resource
+    RedisTemplate redisTemplate;
+
+    @Scheduled(fixedRate = 1000 * 10)
     public void getHuobiPrice() {
         String url = String.format(HUOBI_GETPRICE_URL, null);
         Map<String, Object> params = null;
@@ -115,7 +118,9 @@ public class HuoBiPriceSchedule {
 
     }
 
+    // TODO: 2019/7/18 cacheRemove没生效,是spel解析的问题，报错no node；并且内部调用方法并不会触发aop生效
     @Transactional(rollbackFor = Exception.class)
+    @CacheRemove("Ticker") //该注解并没有生效
     public void saveAll(List<CurrencyPrice> list) {
         try {
             currencyPriceRepo.saveAll(list);
