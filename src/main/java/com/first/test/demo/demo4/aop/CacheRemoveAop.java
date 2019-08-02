@@ -31,7 +31,7 @@ public class CacheRemoveAop {
     /**
      * 截获标有@CacheRemove的方法
      */
-    @Pointcut(value = "(@annotation(com.first.test.demo.demo4.aop.CacheRemove))")
+    @Pointcut(value = "(@annotation(com.first.test.demo.demo4.aop.CacheRemove   ))")
     private void pointcut() {
     }
 

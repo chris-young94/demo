@@ -101,6 +101,7 @@ public class HuoBiPriceSchedule {
         return ethusdt;
     }
 
+    // TODO: 2019/7/22 @Transactional 没有起作用，该注解实质是基于springAOP的CGLIB代理,调用此方法而并非调用的是代理类中的方法，是不会被切进去的
     @Transactional(rollbackFor = Exception.class)
     public void saveEthusdtPrice(BigDecimal price) {
         try {
@@ -118,7 +119,7 @@ public class HuoBiPriceSchedule {
 
     }
 
-    // TODO: 2019/7/18 cacheRemove没生效,是spel解析的问题，报错no node；并且内部调用方法并不会触发aop生效
+    // TODO: 2019/7/18 cacheRemove没生效,是spel解析的问题，报错no node；并且内部调用方法并不会触发aop生效,或者避免使用基于 proxy 的 AOP 模式，可以使用基于 aspectJ 的 AOP 模式来解决这个问题。@Transactional也没有起作用
     @Transactional(rollbackFor = Exception.class)
     @CacheRemove("Ticker") //该注解并没有生效
     public void saveAll(List<CurrencyPrice> list) {
